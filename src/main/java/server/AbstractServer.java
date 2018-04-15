@@ -2,20 +2,17 @@ package server;
 
 
 import model.Artist;
-import model.Concert;
 import model.Location;
 import model.Ticket;
-import networking.IObserver;
 import service.ConcertService;
 import service.LoginService;
 import service.Service;
-import sun.rmi.runtime.Log;
 
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -33,7 +30,7 @@ public abstract class AbstractServer {
 
     protected Service<Integer, Ticket> ticketService;
 
-    protected Map<String, Integer> clients; //username + port
+    protected ArrayList<ObjectOutputStream> clients;
 
     public void setTicketService(Service<Integer, Ticket> ticketService) {
         this.ticketService = ticketService;
@@ -61,7 +58,7 @@ public abstract class AbstractServer {
 
     public AbstractServer(int port) {
         this.port = port;
-        this.clients=new ConcurrentHashMap<>();
+        this.clients=new ArrayList<java.io.ObjectOutputStream>();
     }
 
     public void start() throws ServerException {
@@ -70,18 +67,20 @@ public abstract class AbstractServer {
             while (true) {
                 System.out.println("Waiting for clients ...");
                 Socket client = server.accept();
+                System.out.println(client);
                 System.out.println("Client connected ...");
                 processRequest(client);
             }
         } catch (IOException e) {
             throw new ServerException("Starting server errror ", e);
-        } finally {
-            try {
-                server.close();
-            } catch (IOException e) {
-                throw new ServerException("Closing server error ", e);
-            }
         }
+//      finally {
+//            try {
+//                server.close();
+//            } catch (IOException e) {
+//                throw new ServerException("Closing server error ", e);
+//            }
+//        }
     }
 
     protected abstract void processRequest(Socket client);
