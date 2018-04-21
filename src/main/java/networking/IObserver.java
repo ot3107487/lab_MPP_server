@@ -7,5 +7,5 @@ import model.Ticket;
 import java.io.Serializable;
 
 public interface IObserver {
-     void concertUpdated(Concert concert) throws NetworkException;
+     void concertUpdated(Concert concert);
 }
