@@ -41,11 +41,10 @@ public class StartServer {
             System.err.println("Cannot find server.properties "+e);
             return;
         }
-
+        System.setProperty("java.security.policy","file:server.policy");
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
         }
-
         IServer serverImpl=new ServerImpl(loginService,artistService,locationService,concertService,ticketService);
 
         try {

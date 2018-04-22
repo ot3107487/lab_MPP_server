@@ -1,7 +1,0 @@
-grant {
-    permission java.security.AllPermission;
-    permission java.net.SocketPermission "127.0.0.1:1024-", "connect,resolve";
-};
-
-java –cp .;build/libs/lab_MPP-1.0-SNAPSHOT.jar -Djava.rmi.server.codebase=file:/c:/temp/rmi/transformer/server/ -Djava.rmi.server.hostname=localhost -Djava.security.policy=server.policy  StartServer
-
