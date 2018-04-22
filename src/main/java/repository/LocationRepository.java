@@ -92,7 +92,8 @@ public class LocationRepository implements Repository<Integer, Location> {
                     int id = result.getInt("id");
                     String name = result.getString("name");
                     int places = result.getInt("places");
-                    location = new Location(id, name, places);;
+                    location = new Location(id, name, places);
+                    ;
                 }
             }
 

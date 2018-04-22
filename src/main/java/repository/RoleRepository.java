@@ -1,7 +1,6 @@
 package repository;
 
 import model.Role;
-import model.Role;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class RoleRepository implements Repository<Integer,Role> {
+public class RoleRepository implements Repository<Integer, Role> {
     private JdbcUtils dbUtils;
 
     public RoleRepository(Properties props) {
@@ -39,7 +38,7 @@ public class RoleRepository implements Repository<Integer,Role> {
         } catch (SQLException ex) {
             System.out.println("Error DB " + ex);
         }
-        if(size()==0){
+        if (size() == 0) {
             try (PreparedStatement preStmt = con.prepareStatement("ALTER TABLE Roles AUTO_INCREMENT = 1")) {
                 int result = preStmt.executeUpdate();
             } catch (SQLException ex) {
@@ -67,8 +66,8 @@ public class RoleRepository implements Repository<Integer,Role> {
             try (ResultSet result = preStmt.executeQuery()) {
                 while (result.next()) {
                     int id = result.getInt("id");
-                    String name=result.getString("name");
-                    Role Role =new Role(id,name);
+                    String name = result.getString("name");
+                    Role Role = new Role(id, name);
                     Roles.add(Role);
                 }
             }
@@ -82,14 +81,14 @@ public class RoleRepository implements Repository<Integer,Role> {
     @Override
     public Role findById(Integer integer) {
         Connection con = dbUtils.getConnection();
-        Role role=null;
+        Role role = null;
         try (PreparedStatement preStmt = con.prepareStatement("select * from Roles where id=?")) {
             preStmt.setInt(1, integer);
             try (ResultSet result = preStmt.executeQuery()) {
                 while (result.next()) {
                     int id = result.getInt("id");
-                    String name=result.getString("name");
-                    role =new Role(id,name);
+                    String name = result.getString("name");
+                    role = new Role(id, name);
                 }
             }
         } catch (SQLException ex) {
@@ -100,12 +99,12 @@ public class RoleRepository implements Repository<Integer,Role> {
 
     @Override
     public int size() {
-        Connection con=dbUtils.getConnection();
-        int size=0;
+        Connection con = dbUtils.getConnection();
+        int size = 0;
         try (PreparedStatement preStmt = con.prepareStatement("select count(*) from Roles")) {
-            try(ResultSet result=preStmt.executeQuery()){
-                while(result.next()){
-                    size+=result.getInt(1);
+            try (ResultSet result = preStmt.executeQuery()) {
+                while (result.next()) {
+                    size += result.getInt(1);
                 }
             }
         } catch (SQLException ex) {

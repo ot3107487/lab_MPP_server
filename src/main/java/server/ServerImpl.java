@@ -6,7 +6,6 @@ import model.Location;
 import model.Ticket;
 import networking.IObserver;
 import networking.IServer;
-import networking.NetworkException;
 import service.ConcertService;
 import service.LoginService;
 import service.Service;
@@ -32,9 +31,12 @@ public class ServerImpl implements IServer {
         this.clients = new ArrayList<>();
     }
 
-    public boolean login(String userName, String password) throws RemoteException {
-
-        return loginService.login(userName, password);
+    public boolean login(String userName, String password, IObserver client) throws RemoteException {
+        if (loginService.login(userName, password)) {
+            clients.add(client);
+            return true;
+        }
+        return false;
     }
 
     public ArrayList<Artist> getArtists() throws RemoteException {
@@ -71,6 +73,11 @@ public class ServerImpl implements IServer {
         for (IObserver client : clients) {
             client.concertUpdated(concert);
         }
+    }
+
+    @Override
+    public void logout(IObserver client) throws RemoteException {
+        this.clients.remove(client);
     }
 
 

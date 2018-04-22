@@ -2,9 +2,7 @@ package networking;
 
 
 import model.Concert;
-import model.Ticket;
 
-import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 

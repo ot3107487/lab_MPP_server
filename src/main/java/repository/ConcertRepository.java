@@ -1,7 +1,5 @@
 package repository;
 
-import model.Artist;
-import model.Concert;
 import model.Concert;
 
 import java.sql.Connection;

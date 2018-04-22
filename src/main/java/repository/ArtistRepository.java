@@ -1,7 +1,6 @@
 package repository;
 
 import model.Artist;
-import model.Artist;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

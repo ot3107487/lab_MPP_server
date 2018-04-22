@@ -89,7 +89,7 @@ public class UserRepository implements Repository<Integer, User> {
     @Override
     public User findById(Integer integer) {
         Connection con = dbUtils.getConnection();
-        User user=null;
+        User user = null;
         try (PreparedStatement preStmt = con.prepareStatement("select * from  Users where id=?")) {
             preStmt.setInt(1, integer);
             try (ResultSet result = preStmt.executeQuery()) {
@@ -125,7 +125,7 @@ public class UserRepository implements Repository<Integer, User> {
         return size;
     }
 
-    public boolean login(String userName,String password){
+    public boolean login(String userName, String password) {
         Connection con = dbUtils.getConnection();
         try (PreparedStatement preStmt = con.prepareStatement("select * from  Users where username=? and password=?")) {
             preStmt.setString(1, userName);

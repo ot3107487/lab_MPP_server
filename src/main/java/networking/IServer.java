@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public interface IServer extends Remote {
-    public boolean login(String userName, String password) throws RemoteException;
+    public boolean login(String userName, String password, IObserver client) throws RemoteException;
 
     public ArrayList<Artist> getArtists() throws RemoteException;
 
@@ -28,4 +28,6 @@ public interface IServer extends Remote {
     public void saveTicket(Ticket ticket) throws RemoteException;
 
     public void updateConcert(Concert concert) throws RemoteException;
+
+    public void logout(IObserver client)throws RemoteException;
 }
