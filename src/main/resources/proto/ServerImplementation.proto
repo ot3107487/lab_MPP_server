@@ -1,0 +1,34 @@
+syntax = "proto3";
+option java_package = "generatedFiles.services";
+
+option java_multiple_files = true;
+
+
+enum RequestType{
+    UPDATES=0;
+    LOGIN=1;
+    ADD=2;
+    GET_CONCERTS=3;
+    GET_LOCATIONS=4;
+    GET_CONCERTS_BY_ARTIST=5;
+    GET_CONCERTS_BY_DATE=6;
+    GET_CONCERTS_BY_ARTIST_AND_DATE=7;
+    SAVE_TICKET=8;
+    UPDATE_CONCERT=9;
+    GET_ARTISTS=10;
+}
+
+message Request{
+    string BodyAsString=1;
+    RequestType requestType=2;
+}
+
+message Response {
+    string status=1;
+    repeated string result=2;
+}
+
+// 4. service, unary request/response
+service ServerImplementation {
+    rpc clientRequest(Request) returns (Response);
+}

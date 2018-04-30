@@ -1,10 +1,11 @@
 package server;
 
 
+import io.grpc.Server;
+import io.grpc.ServerBuilder;
 import model.Artist;
 import model.Location;
 import model.Ticket;
-import networking.IServer;
 import repository.*;
 import repository_utils.PropertiesForJDBC;
 import service.ConcertService;
@@ -12,13 +13,13 @@ import service.LoginService;
 import service.Service;
 
 import java.io.IOException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.Properties;
 
 public class StartServer {
-    public static void main(String[] args) {
+
+    private Server server;
+
+    private void start() throws IOException {
+    /* The port on which the server should run */
         UserRepository userRepository = new UserRepository(PropertiesForJDBC.getProperties());
         ArtistRepository artistRepository = new ArtistRepository(PropertiesForJDBC.getProperties());
         ConcertRepository concertRepository = new ConcertRepository(PropertiesForJDBC.getProperties());
@@ -32,29 +33,53 @@ public class StartServer {
         Service<Integer, Location> locationService = new Service<>(locationRepository);
         Service<Integer, Ticket> ticketService = new Service<>(ticketRepository);
 
-        Properties serverProps = new Properties();
-        try {
-            serverProps.load(StartServer.class.getResourceAsStream("/server.properties"));
-            System.out.println("Server properties set. ");
-            serverProps.list(System.out);
-        } catch (IOException e) {
-            System.err.println("Cannot find server.properties " + e);
-            return;
-        }
-        System.setProperty("java.security.policy", "file:server.policy");
-        System.setProperty("java.rmi.server.hostname", "localhost");
-        if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-        }
-        IServer serverImpl = new ServerImpl(loginService, artistService, locationService, concertService, ticketService);
+        ServerGrpcImpl serverImpl = new ServerGrpcImpl(loginService, artistService, locationService, concertService, ticketService);
 
+
+        int port = 55555;
+        server = ServerBuilder.forPort(port)
+                .addService(serverImpl)
+                .build()
+                .start();
+        //logger.info("Server started, listening on " + port);
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                // Use stderr here since the logger may have been reset by its JVM shutdown hook.
+                System.err.println("*** shutting down gRPC server since JVM is shutting down");
+                StartServer.this.stop();
+                System.err.println("*** server shut down");
+            }
+        });
+    }
+
+    private void stop() {
+        if (server != null) {
+            server.shutdown();
+        }
+    }
+
+    /**
+     * Await termination on the main thread since the grpc library uses daemon threads.
+     */
+    private void blockUntilShutdown() throws InterruptedException {
+        if (server != null) {
+            server.awaitTermination();
+        }
+    }
+
+    /**
+     * Main launches the server from the command line.
+     */
+
+
+    public static void main(String[] args) {
+        final StartServer server = new StartServer();
         try {
-            String name = serverProps.getProperty("rmi.serverID", "Server");
-            IServer stub = (IServer) UnicastRemoteObject.exportObject(serverImpl, 0);
-            Registry registry = LocateRegistry.getRegistry();
-            System.out.println("before binding");
-            registry.rebind(name, stub);
-            System.out.println("Chat server   bound");
+            System.out.println("Starting server...");
+            server.start();
+            System.out.println("Server started!");
+            server.blockUntilShutdown();
         } catch (Exception e) {
             System.err.println("Server exception:" + e);
             e.printStackTrace();
