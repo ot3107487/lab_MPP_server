@@ -1,0 +1,66 @@
+﻿syntax = "proto3";
+
+package ursus;
+
+service IServer{
+	rpc login(CredentialsGrpc) returns (GrpcReply);
+	rpc getArtists(RequestGrpc) returns (ArtistList);
+	rpc getConcerts(RequestGrpc) returns (ConcertList);
+	rpc getLocation(RequestGrpc) returns(LocationList);
+	rpc getConcertsByArtist(ArtistGrpc) returns (ConcertList);
+	rpc getConcertsByDate(RequestGrpc) returns (ConcertList);
+	rpc saveTicket(TicketGrpc) returns (GrpcReply);
+	rpc updateConcert(ConcertGrpc) returns (GrpcReply);
+}
+
+message CredentialsGrpc{
+	string username=1;
+	string password=2;
+}
+
+message GrpcReply{
+	string status=1;
+}
+message RequestGrpc{
+	string requestType=1;
+}
+
+message ArtistGrpc{
+	int32 id=1;
+	string lastname=2;
+	string firstname=3;
+}
+
+message ConcertGrpc{
+	int32 id=1;
+	int32 idArtist=2;
+	string date=3;
+	int32 idLocation=4;
+	int32 numberOfTickets=5;
+	int32 soldTickets=6;
+}
+
+message LocationGrpc{
+	int32 id=1;
+	string name=2;
+	int32 places=3;
+}
+
+message TicketGrpc{
+	int32 id=1;
+	int32 idConcert=2;
+	int32 placesBought=3;
+	string buyer=4;
+}
+
+message ArtistList{
+	repeated ArtistGrpc artists=1;
+}
+
+message LocationList{
+	repeated LocationGrpc locations=1;
+}
+
+message ConcertList{
+	repeated ConcertGrpc concerts=1;
+}
