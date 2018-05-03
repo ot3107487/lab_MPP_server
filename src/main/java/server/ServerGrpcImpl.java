@@ -11,12 +11,16 @@ import service.Service;
 import ursus.GrpcProtos;
 import ursus.IServerGrpc;
 
+import java.util.ArrayList;
+
 public class ServerGrpcImpl extends IServerGrpc.IServerImplBase {
     private final LoginService loginService;
     private final Service<Integer, Artist> artistService;
     private final Service<Integer, Location> locationService;
     private final ConcertService concertService;
     private final Service<Integer, Ticket> ticketService;
+
+    private ArrayList<StreamObserver<GrpcProtos.ConcertGrpc>> clients = new ArrayList<>();
 
     public ServerGrpcImpl(LoginService loginService, Service<Integer, Artist> artistService, Service<Integer, Location> locationService, ConcertService concertService, Service<Integer, Ticket> ticketService) {
 
@@ -131,10 +135,34 @@ public class ServerGrpcImpl extends IServerGrpc.IServerImplBase {
 
     @Override
     public void updateConcert(GrpcProtos.ConcertGrpc request, StreamObserver<GrpcProtos.GrpcReply> responseObserver) {
-        Concert concert=new Concert(request.getId(),request.getIdArtist()
-                ,request.getDate(),request.getIdLocation(),request.getNumberOfTickets(),request.getSoldTickets());
+        Concert concert = new Concert(request.getId(), request.getIdArtist()
+                , request.getDate(), request.getIdLocation(), request.getNumberOfTickets(), request.getSoldTickets());
         concertService.put(concert);
         responseObserver.onNext(GrpcProtos.GrpcReply.newBuilder().build());
         responseObserver.onCompleted();
+    }
+
+    @Override
+    public StreamObserver<GrpcProtos.ConcertGrpc> subscribe(StreamObserver<GrpcProtos.ConcertGrpc> responseObserver) {
+        clients.add(responseObserver);
+        return new StreamObserver<GrpcProtos.ConcertGrpc>() {
+
+            @Override
+            public void onNext(GrpcProtos.ConcertGrpc value) {
+                clients.forEach(client -> {
+                    client.onNext(value);
+                });
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                clients.remove(responseObserver);
+            }
+
+            @Override
+            public void onCompleted() {
+                clients.remove(responseObserver);
+            }
+        };
     }
 }

@@ -11,6 +11,11 @@ service IServer{
 	rpc getConcertsByDate(RequestGrpc) returns (ConcertList);
 	rpc saveTicket(TicketGrpc) returns (GrpcReply);
 	rpc updateConcert(ConcertGrpc) returns (GrpcReply);
+	rpc subscribe(stream ConcertGrpc) returns (stream ConcertGrpc);
+}
+
+message NotifyGrpc{
+	string status=1;
 }
 
 message CredentialsGrpc{
