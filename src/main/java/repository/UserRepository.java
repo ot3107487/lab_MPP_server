@@ -1,5 +1,6 @@
 package repository;
 
+import model.Role;
 import model.User;
 
 import java.sql.Connection;
@@ -25,7 +26,7 @@ public class UserRepository implements Repository<Integer, User> {
             preStmt.setString(2, entity.getFirstName());
             preStmt.setString(3, entity.getUserName());
             preStmt.setString(4, entity.getPassword());
-            preStmt.setString(5, Integer.toString(entity.getIdRole()));
+            preStmt.setString(5, Integer.toString(entity.getRole().getId()));
             int result = preStmt.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("Error DB " + ex);
@@ -75,7 +76,7 @@ public class UserRepository implements Repository<Integer, User> {
                     String userName = result.getString("username");
                     String password = result.getString("password");
                     int idRole = result.getInt("idRole");
-                    User User = new User(id, lastName, firstName, userName, password, idRole);
+                    User User = new User(lastName, firstName, userName, password, new Role(idRole,""));
                     Users.add(User);
                 }
             }
@@ -100,7 +101,7 @@ public class UserRepository implements Repository<Integer, User> {
                     String userName = result.getString("username");
                     String password = result.getString("password");
                     int idRole = result.getInt("idRole");
-                    user = new User(id, lastName, firstName, userName, password, idRole);
+                    user = new User(lastName, firstName, userName, password,  new Role(idRole,""));
                 }
             }
         } catch (SQLException ex) {

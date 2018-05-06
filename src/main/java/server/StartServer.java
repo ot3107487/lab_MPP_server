@@ -6,13 +6,24 @@ import io.grpc.ServerBuilder;
 import model.Artist;
 import model.Location;
 import model.Ticket;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
 import repository.*;
+import repository_utils.ClearTables;
+import repository_utils.FillTables;
 import repository_utils.PropertiesForJDBC;
 import service.ConcertService;
 import service.LoginService;
 import service.Service;
 
 import java.io.IOException;
+@SpringBootApplication
+@ComponentScan(basePackages = {
+        "config",
+})
+@EntityScan(basePackages = {"model"})
 
 public class StartServer {
 
@@ -74,6 +85,9 @@ public class StartServer {
 
 
     public static void main(String[] args) {
+
+
+        SpringApplication.run(StartServer.class, args);
         final StartServer server = new StartServer();
         try {
             System.out.println("Starting server...");

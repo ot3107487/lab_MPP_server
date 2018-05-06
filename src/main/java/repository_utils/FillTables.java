@@ -9,10 +9,11 @@ public class FillTables {
     }
 
     public static void fillUsers(UserRepository repository) {
-        repository.save(new User(0, "Ioan", "Bogdan", "ibir2121", "ibir2121", 1));
-        repository.save(new User(0, "Ivanov", "Alex", "iair2124", "iair2124", 1));
-        repository.save(new User(0, "Iova", "Rares", "irir2123", "ibir2123", 1));
-        repository.save(new User(0, "Ionut", "Andreea", "iair2122", "ibir2122", 1));
+        Role role=new Role(1, "Employee");
+        repository.save(new User("Ioan", "Bogdan", "ibir2121", "ibir2121", role));
+        repository.save(new User("Ivanov", "Alex", "iair2124", "iair2124", role));
+        repository.save(new User( "Iova", "Rares", "irir2123", "ibir2123", role));
+        repository.save(new User( "Ionut", "Andreea", "iair2122", "ibir2122", role));
     }
 
     public static void fillArtists(ArtistRepository repository) {
