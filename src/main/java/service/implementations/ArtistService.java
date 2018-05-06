@@ -1,14 +1,15 @@
-package service;
+package service.implementations;
 
 import model.Artist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.ArtistRepositoryJPA;
+import service.interfaces.IArtistService;
 
 import java.util.ArrayList;
 
 @Service
-public class ArtistService implements IService<Artist> {
+public class ArtistService implements IArtistService {
 
     private final ArtistRepositoryJPA artistRepositoryJPA;
 

@@ -1,4 +1,4 @@
-package service;
+package service.interfaces;
 
 import java.util.ArrayList;
 
@@ -14,4 +14,6 @@ public interface IService<T> {
     void put(T elem);
 
     ArrayList<T> getAll();
+
+    T findById(int id);
 }

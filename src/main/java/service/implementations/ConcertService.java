@@ -1,15 +1,16 @@
-package service;
+package service.implementations;
 
 import model.Artist;
 import model.Concert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.ConcertRepositoryJPA;
+import service.interfaces.IConcertService;
 
 import java.util.ArrayList;
 
 @Service
-public class ConcertService implements IConcertService{
+public class ConcertService implements IConcertService {
     private final ConcertRepositoryJPA concertRepositoryJPA;
 
     @Autowired
@@ -56,5 +57,10 @@ public class ConcertService implements IConcertService{
     @Override
     public ArrayList<Concert> getAll() {
         return (ArrayList<Concert>) concertRepositoryJPA.findAll();
+    }
+
+    @Override
+    public Concert findById(int id) {
+        return concertRepositoryJPA.findOne(id);
     }
 }

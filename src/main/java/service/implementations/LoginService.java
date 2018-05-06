@@ -1,9 +1,10 @@
-package service;
+package service.implementations;
 
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.UserRepositoryJPA;
+import service.interfaces.ILoginService;
 
 @Service
 public class LoginService implements ILoginService {

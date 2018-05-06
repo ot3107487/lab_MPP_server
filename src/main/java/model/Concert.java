@@ -5,11 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.websocket.ClientEndpoint;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Concert implements HasId<Integer>,Serializable{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -31,6 +32,10 @@ public class Concert implements HasId<Integer>,Serializable{
 
     @Column(name="soldTickets")
     private int soldTickets;
+
+    @OneToMany(mappedBy = "concert")
+    private List<Ticket> tickets;
+
 
     public Concert() {
     }

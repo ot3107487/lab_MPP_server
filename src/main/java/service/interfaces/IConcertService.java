@@ -1,9 +1,8 @@
-package service;
+package service.interfaces;
 
 import model.Artist;
 import model.Concert;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public interface IConcertService extends IService<Concert> {

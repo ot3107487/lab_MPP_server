@@ -2,10 +2,12 @@ package model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
+
 @Entity
 public class Location implements HasId<Integer>,Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -14,6 +16,10 @@ public class Location implements HasId<Integer>,Serializable {
 
     @Column(name = "places")
     private int places;
+
+    @OneToMany(mappedBy = "location")
+    private List<Concert> concerts;
+
 
     public Location() {
     }

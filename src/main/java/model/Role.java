@@ -1,16 +1,21 @@
 package model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Role implements HasId<Integer> {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "role")
+    private List<User> users;
+
 
     public Role(int id, String name) {
         this.id = id;

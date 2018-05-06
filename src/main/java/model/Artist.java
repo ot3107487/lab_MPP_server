@@ -2,10 +2,12 @@ package model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
+
 @Entity
 public class Artist implements Serializable,HasId<Integer> {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="id")
     private int id;
 
@@ -15,8 +17,12 @@ public class Artist implements Serializable,HasId<Integer> {
     @Column(name="first_name")
     private String firstName;
 
+    @OneToMany(mappedBy = "artist")
+    private List<Concert> concerts;
+
     public Artist() {
     }
+
 
     public Artist(int id, String lastName, String firstName) {
         this.id = id;

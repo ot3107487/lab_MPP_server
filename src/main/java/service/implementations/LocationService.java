@@ -1,14 +1,15 @@
-package service;
+package service.implementations;
 
 import model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.LocationRepositoryJPA;
+import service.interfaces.ILocationService;
 
 import java.util.ArrayList;
 
 @Service
-public class LocationService implements IService<Location> {
+public class LocationService implements ILocationService {
     private final LocationRepositoryJPA locationRepositoryJPA;
 
     @Autowired
@@ -39,5 +40,10 @@ public class LocationService implements IService<Location> {
     @Override
     public ArrayList<Location> getAll() {
         return (ArrayList<Location>) locationRepositoryJPA.findAll();
+    }
+
+    @Override
+    public Location findById(int id) {
+        return locationRepositoryJPA.findOne(id);
     }
 }
