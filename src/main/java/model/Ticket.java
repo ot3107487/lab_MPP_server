@@ -1,20 +1,38 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
+@Entity
 public class Ticket implements HasId<Integer>,Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
-    private int idConcert;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idConcert", nullable = false)
+    @JsonIgnore
+    private Concert concert;
+
+    @Column(name = "placesBought")
     private int placesBought;
+
+    @Column(name="buyer")
     private String buyer;
 
-    public Ticket(int id, int idConcert, int placesBought, String buyer) {
-        this.id = id;
-        this.idConcert = idConcert;
+    public Ticket() {
+    }
+
+    public Ticket(Concert concert, int placesBought, String buyer) {
+        this.concert = concert;
         this.placesBought = placesBought;
         this.buyer = buyer;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
@@ -23,12 +41,12 @@ public class Ticket implements HasId<Integer>,Serializable {
         this.id = id;
     }
 
-    public int getIdConcert() {
-        return idConcert;
+    public Concert getConcert() {
+        return concert;
     }
 
-    public void setIdConcert(int idConcert) {
-        this.idConcert = idConcert;
+    public void setConcert(Concert concert) {
+        this.concert = concert;
     }
 
     public int getPlacesBought() {
@@ -45,10 +63,5 @@ public class Ticket implements HasId<Integer>,Serializable {
 
     public void setBuyer(String buyer) {
         this.buyer = buyer;
-    }
-
-    @Override
-    public String toString() {
-        return "Nume si prenume cumparator:"+buyer+"/n Locuri cumparate:"+placesBought;
     }
 }

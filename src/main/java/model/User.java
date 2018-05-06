@@ -1,22 +1,42 @@
 package model;
 
-public class User implements HasId<Integer> {
-    private int id;
-    private String lastName;
-    private String firstName;
-    private String userName;
-    private String password;
-    private int idRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-    public User(int id, String lastName, String firstName, String userName, String password, int idRole) {
-        this.id = id;
+import javax.persistence.*;
+
+@Entity
+public class User implements HasId<Integer> {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private int id;
+    @Column(name = "lastName")
+    private String lastName;
+    @Column(name = "firstName")
+    private String firstName;
+    @Column(name = "userName")
+    private String userName;
+    @Column(name = "password")
+    private String password;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idRole", nullable = false)
+    @JsonIgnore
+    private Role role;
+
+    public User() {
+    }
+
+    public User(String lastName, String firstName, String userName, String password, Role role) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.userName = userName;
         this.password = password;
-        this.idRole = idRole;
+        this.role = role;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
@@ -57,11 +77,11 @@ public class User implements HasId<Integer> {
         this.password = password;
     }
 
-    public int getIdRole() {
-        return idRole;
+    public Role getRole() {
+        return role;
     }
 
-    public void setIdRole(int idRole) {
-        this.idRole = idRole;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

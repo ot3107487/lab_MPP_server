@@ -1,11 +1,22 @@
 package model;
 
+import javax.persistence.*;
 import java.io.Serializable;
-
-public class Artist implements HasId<Integer>,Serializable {
+@Entity
+public class Artist implements Serializable,HasId<Integer> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name ="id")
     private int id;
+
+    @Column(name="last_name")
     private String lastName;
+
+    @Column(name="first_name")
     private String firstName;
+
+    public Artist() {
+    }
 
     public Artist(int id, String lastName, String firstName) {
         this.id = id;

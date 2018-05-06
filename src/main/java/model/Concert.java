@@ -1,24 +1,49 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import javax.websocket.ClientEndpoint;
 import java.io.Serializable;
 
+@Entity
 public class Concert implements HasId<Integer>,Serializable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
-    private int idArtist;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idArtist", nullable = false)
+    @JsonIgnore
+    private Artist artist;
+
+    @Column(name="date")
     private String date;
-    private int idLocation;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idLocation", nullable = false)
+    @JsonIgnore
+    private Location location;
+
+    @Column(name="numberOfTickets")
     private int numberOfTickets;
+
+    @Column(name="soldTickets")
     private int soldTickets;
 
-    public Concert(int id, int idArtist, String date, int idLocation, int numberOfTickets, int soldTickets) {
-        this.id = id;
-        this.idArtist = idArtist;
+    public Concert() {
+    }
+
+    public Concert(Artist artist, String date, Location location, int numberOfTickets, int soldTickets) {
+        this.artist = artist;
         this.date = date;
-        this.idLocation = idLocation;
+        this.location = location;
         this.numberOfTickets = numberOfTickets;
         this.soldTickets = soldTickets;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
@@ -27,12 +52,12 @@ public class Concert implements HasId<Integer>,Serializable{
         this.id = id;
     }
 
-    public int getIdArtist() {
-        return idArtist;
+    public Artist getArtist() {
+        return artist;
     }
 
-    public void setIdArtist(int idArtist) {
-        this.idArtist = idArtist;
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
 
     public String getDate() {
@@ -43,12 +68,12 @@ public class Concert implements HasId<Integer>,Serializable{
         this.date = date;
     }
 
-    public int getIdLocation() {
-        return idLocation;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setIdLocation(int idLocation) {
-        this.idLocation = idLocation;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public int getNumberOfTickets() {

@@ -1,16 +1,22 @@
 package service;
 
-import repository.UserRepository;
+import model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import repository.UserRepositoryJPA;
 
-public class LoginService {
-    private UserRepository repository;
+@Service
+public class LoginService implements ILoginService {
+    final
+    private UserRepositoryJPA userRepositoryJPA;
 
-    public LoginService(UserRepository repository) {
-        this.repository = repository;
+    @Autowired
+    public LoginService(UserRepositoryJPA userRepositoryJPA) {
+        this.userRepositoryJPA = userRepositoryJPA;
     }
 
     public boolean login(String userName, String password) {
-
-        return repository.login(userName, password);
+        User user=userRepositoryJPA.getByPasswordAndUserName(password,userName);
+        return user!=null;
     }
 }
