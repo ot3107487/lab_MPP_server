@@ -2,11 +2,10 @@ package controller;
 
 import model.Artist;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import service.interfaces.IArtistService;
-import service.interfaces.IService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 @RestController
@@ -25,7 +24,26 @@ public class ArtistController {
     }
 
     @PostMapping
-    public void saveArtist(@RequestBody Artist artist){
+    public void saveArtist(@RequestBody Artist artist) {
         artistService.save(artist);
+    }
+
+    @PostMapping(value = "/{idArtist}")
+    public Artist findById(@PathVariable("idArtist") String idArtist, HttpServletResponse response) {
+        Artist artist = artistService.findById(Integer.parseInt(idArtist));
+        if (artist == null)
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return artist;
+    }
+
+    @PutMapping
+    private void put(@RequestBody Artist artist) {
+        artistService.put(artist);
+    }
+
+    @DeleteMapping
+    public void delete(@RequestBody Artist artist) {
+
+        artistService.delete(artist);
     }
 }

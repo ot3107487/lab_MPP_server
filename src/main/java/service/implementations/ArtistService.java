@@ -13,6 +13,7 @@ public class ArtistService implements IArtistService {
 
     private final ArtistRepositoryJPA artistRepositoryJPA;
 
+
     @Autowired
     public ArtistService(ArtistRepositoryJPA artistRepositoryJPA) {
         this.artistRepositoryJPA = artistRepositoryJPA;

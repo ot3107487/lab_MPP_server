@@ -3,8 +3,8 @@ package model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.websocket.ClientEndpoint;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,8 +33,8 @@ public class Concert implements HasId<Integer>,Serializable{
     @Column(name="soldTickets")
     private int soldTickets;
 
-    @OneToMany(mappedBy = "concert")
-    private List<Ticket> tickets;
+    @OneToMany(mappedBy = "concert",orphanRemoval = true, cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    private List<Ticket> tickets=new ArrayList<>();
 
 
     public Concert() {

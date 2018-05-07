@@ -2,23 +2,24 @@ package model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Artist implements Serializable,HasId<Integer> {
+public class Artist implements Serializable, HasId<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="id")
+    @Column(name = "id")
     private int id;
 
-    @Column(name="last_name")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name="first_name")
+    @Column(name = "first_name")
     private String firstName;
 
-    @OneToMany(mappedBy = "artist")
-    private List<Concert> concerts;
+    @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.PERSIST)
+    private List<Concert> concerts=new ArrayList<>();
 
     public Artist() {
     }
