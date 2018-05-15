@@ -28,7 +28,7 @@ public class ArtistController {
         artistService.save(artist);
     }
 
-    @PostMapping(value = "/{idArtist}")
+    @GetMapping(value = "/{idArtist}")
     public Artist findById(@PathVariable("idArtist") String idArtist, HttpServletResponse response) {
         Artist artist = artistService.findById(Integer.parseInt(idArtist));
         if (artist == null)
@@ -37,7 +37,7 @@ public class ArtistController {
     }
 
     @PutMapping
-    private void put(@RequestBody Artist artist) {
+    public void put(@RequestBody Artist artist) {
         artistService.put(artist);
     }
 
