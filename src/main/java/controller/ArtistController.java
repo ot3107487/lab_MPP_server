@@ -41,9 +41,12 @@ public class ArtistController {
         artistService.put(artist);
     }
 
-    @DeleteMapping
-    public void delete(@RequestBody Artist artist) {
-
+    @DeleteMapping(value = "/{idArtist}")
+    public void delete(@PathVariable("idArtist") String idArtist,HttpServletResponse response) {
+        Artist artist=artistService.findById(Integer.parseInt(idArtist));
         artistService.delete(artist);
+        Artist deletedArtist=artistService.findById(Integer.parseInt(idArtist));
+        if(deletedArtist != null)
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 }
