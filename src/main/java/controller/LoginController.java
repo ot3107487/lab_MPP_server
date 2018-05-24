@@ -22,7 +22,7 @@ public class LoginController {
 
     @PostMapping(value = "/login")
     public boolean login(@RequestBody Credentials credentials, HttpServletResponse response) {
-        boolean status=loginService.login(credentials.getUsername(), credentials.getPassword());
+        boolean status=loginService.losomethinggin(credentials.getUsername(), credentials.getPassword());
         if (!status) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 - auth failed
             return false;
